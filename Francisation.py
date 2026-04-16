@@ -75,12 +75,12 @@ if uploaded_file:
                 "Prénom": prenom,                                    # découpe
                 "Genre": row["S"],
                 "Email": row["Adresse courriel"],
-                "Cellulaire": row["Céllulaire ou Téléphone autre"],
+                "Mobile": row["Céllulaire ou Téléphone autre"],
                 "Téléphone autre": row["Téléphone maison"],
       
                 "Francisation": "VRAI",
-                "CARI Usager": "VRAI",
-                "ÉTIQUETTE": ""
+                "Usager CARI": "VRAI",
+                "Étiquette": ""
 
                 
             })
