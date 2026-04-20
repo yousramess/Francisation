@@ -130,5 +130,5 @@ if fichier1 and fichier2:
     except Exception as e:
         st.error(f"Erreur : {e}")
 else:
-    st.warning("Veuillez téléverser les 2 fichiers Excel.")import streamlit as st
+    st.warning("Veuillez téléverser les 2 fichiers Excel.")
 
