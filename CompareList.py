@@ -6,6 +6,8 @@ import unicodedata
 import os
 from datetime import datetime
 
+st.image("logo.png", width=200)
+
 st.set_page_config(page_title="Comparaison Excel - Ref.Indiv", layout="wide")
 
 
