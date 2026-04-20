@@ -4,7 +4,7 @@ import io
 import re
 import unicodedata
 
-st.set_page_config(page_title="Comparaison Excel - Num.Réf", layout="wide")
+st.set_page_config(page_title="Comparaison Excel - Réf.Ind", layout="wide")
 
 
 def normaliser_nom_colonne(col):
@@ -19,13 +19,10 @@ def normaliser_nom_colonne(col):
 
 
 def trouver_colonne_num_ref(df):
-    """Trouve automatiquement la colonne Num.Réf."""
+    """Trouve automatiquement la colonne Ref.Indiv"""
     variantes_possibles = {
-        "numref",
-        "numeroref",
-        "numeroreference",
-        "numreference",
-        "refnum"
+        "Ref.Indiv",
+        "Referennce Indiv",
     }
 
     for col in df.columns:
@@ -35,7 +32,7 @@ def trouver_colonne_num_ref(df):
 
 
 def nettoyer_num_ref(serie):
-    """Nettoie les valeurs Num.Réf pour la comparaison."""
+    """Nettoie les valeurs Ref.Indiv pour la comparaison."""
     return (
         serie.astype(str)
         .str.strip()
@@ -48,9 +45,9 @@ def comparer_fichiers(df1, df2):
     col2 = trouver_colonne_num_ref(df2)
 
     if not col1:
-        raise ValueError("La colonne 'Num.Réf' est introuvable dans le fichier 1.")
+        raise ValueError("La colonne 'Ref.Indiv' est introuvable dans le fichier 1.")
     if not col2:
-        raise ValueError("La colonne 'Num.Réf' est introuvable dans le fichier 2.")
+        raise ValueError("La colonne 'Ref.Indiv' est introuvable dans le fichier 2.")
 
     df1 = df1.copy()
     df2 = df2.copy()
@@ -77,9 +74,9 @@ def dataframe_to_excel_bytes(df):
 
 
 # Interface
-st.title("Comparaison de 2 fichiers Excel par Num.Réf")
+st.title("Comparaison de 2 fichiers Excel par Référence Indiv")
 st.write(
-    "Téléverse 2 fichiers Excel. L'application va comparer la colonne **Num.Réf** "
+    "Téléverse 2 fichiers Excel. L'application va comparer la colonne **Ref.Indiv** "
     "et extraire les lignes du **2e fichier** dont le numéro n'existe pas dans le **1er**."
 )
 
@@ -117,15 +114,19 @@ if fichier1 and fichier2:
                 st.dataframe(nouvelles_lignes, use_container_width=True)
 
                 excel_bytes = dataframe_to_excel_bytes(nouvelles_lignes)
+                
+                nom_original = os.path.splitext(fichier2.name)[0]  # enlève .xlsx
+                nom_sortie = f"{nom_original}_New.xlsx"
 
                 st.download_button(
                     label="Télécharger le fichier résultat",
                     data=excel_bytes,
-                    file_name="nouvelles_lignes_num_ref.xlsx",
+                    file_name=nom_sortie,
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 )
+                
             else:
-                st.warning("Aucune nouvelle ligne à ajouter. Tous les Num.Réf du fichier 2 existent déjà dans le fichier 1.")
+                st.warning("Aucune nouvelle ligne à ajouter. Tous les Ref.Indiv du fichier 2 existent déjà dans le fichier 1.")
 
     except Exception as e:
         st.error(f"Erreur : {e}")
