@@ -90,7 +90,7 @@ with col1:
     st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
 
 with col2:
-    st.image("logo.png", width=150)
+    st.image("logo.png", width=250)
     
 
 st.write(
