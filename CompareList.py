@@ -84,11 +84,13 @@ def dataframe_to_excel_bytes(df):
 # ================== UI ==================
 col1, col2 = st.columns([1,4])
 
-with col2:
-    st.image("logo.png", width=120)
+col1, col2 = st.columns([4, 1])
 
 with col1:
     st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
+
+with col2:
+    st.image("logo.png", width=150)
     
 
 st.write(
