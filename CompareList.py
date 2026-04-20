@@ -128,7 +128,7 @@ if fichier1 and fichier2:
                 # 🔹 Nom du fichier dynamique
                 nom_original = os.path.splitext(fichier2.name)[0]
                 date_str = datetime.now().strftime("%Y%m%d")
-                nom_sortie = f"{nom_original}_Compare_{date_str}.xlsx"
+                nom_sortie = f"{nom_original}_New_{date_str}.xlsx"
 
                 excel_bytes = dataframe_to_excel_bytes(nouvelles_lignes)
 
