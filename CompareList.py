@@ -91,7 +91,11 @@ with col1:
 
 with col2:
     st.image("logo.png", width=250)
-    
+
+st.set_page_config(
+    page_title="Comparaison Excel",
+    page_icon="logo.png"
+)
 
 st.write(
     "Cette application compare deux fichiers Excel sur la colonne **Ref.Indiv** "
