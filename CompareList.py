@@ -6,7 +6,7 @@ import unicodedata
 import os
 from datetime import datetime
 
-st.image("logo.png", width=200)
+
 
 st.set_page_config(page_title="Comparaison Excel - Ref.Indiv", layout="wide")
 
@@ -82,7 +82,7 @@ def dataframe_to_excel_bytes(df):
 
 
 # ================== UI ==================
-
+st.image("logo.png", width=200)
 st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
 
 st.write(
