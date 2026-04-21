@@ -92,7 +92,7 @@ def accueil():
         st.write("Sélectionnez l’outil que vous souhaitez utiliser.")
 
     with top2:
-        st.image("logo.png", width=180)
+        st.image("logo.png", width=250)
 
     st.write("")
     st.write("")
