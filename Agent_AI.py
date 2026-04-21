@@ -20,51 +20,67 @@ st.set_page_config(
 # -------------------------
 # CSS GLOBAL
 # -------------------------
+
 st.markdown("""
 <style>
 
-/* ===== RESET boutons ===== */
+/* ===== STYLE GLOBAL BOUTONS ===== */
 div.stButton > button {
-    border-radius: 12px;
-}
-
-/* ===== BOUTONS ACCUEIL ===== */
-div.stButton button {
     width: 100%;
-    min-height: 100px;
-    font-size: 34px;
+    min-height: 110px;
+    font-size: 26px;
     font-weight: 700;
-    border-radius: 20px;
+    border-radius: 22px;
     border: none;
     color: white !important;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    transition: all 0.25s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
 }
 
-/* Hover */
-div.stButton button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.25);
-}
-
-/* Texte */
-div.stButton button span {
+/* TEXTE INTERNE */
+div.stButton > button span {
     color: white !important;
-    font-size: 24px !important;
+    font-size: 26px !important;
     font-weight: 700 !important;
 }
 
-/* ===== COULEURS ACCUEIL ===== */
+/* ===== BOUTON 1 (BLEU) ===== */
 div.stButton:nth-of-type(1) button {
-    background: #163d8f !important; /* BLEU FONCÉ */
+    background: #163d8f !important;  /* bleu foncé */
 }
 
+/* HOVER → devient ORANGE */
+div.stButton:nth-of-type(1) button:hover {
+    background: #f58220 !important;
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(245,130,32,0.5);
+}
+
+/* ===== BOUTON 2 (ORANGE) ===== */
 div.stButton:nth-of-type(2) button {
-    background: #f58220 !important; /* ORANGE */
+    background: #f58220 !important;  /* orange */
+}
+
+/* HOVER → devient BLEU */
+div.stButton:nth-of-type(2) button:hover {
+    background: #163d8f !important;
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(22,61,143,0.5);
+}
+
+/* ===== EFFET HOVER GLOBAL ===== */
+div.stButton > button:hover {
+    transform: translateY(-3px);
+}
+
+/* ===== SUPPRESSION STYLE PAR DÉFAUT STREAMLIT ===== */
+button[kind="secondary"] {
+    background: none;
 }
 
 </style>
 """, unsafe_allow_html=True)
+
 
 # -------------------------
 # NAVIGATION
