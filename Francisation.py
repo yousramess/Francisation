@@ -3,6 +3,24 @@ import pdfplumber
 import pandas as pd
 from io import BytesIO
 
+col1, col2 = st.columns([1,4])
+
+col1, col2 = st.columns([4, 1])
+
+with col1:
+    st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
+
+with col2:
+    st.image("logo.png", width=220)
+
+st.set_page_config(
+    page_title="Outil de conversion PDF vers Excel",
+    page_icon="logo.png"
+)
+
+st.write(
+    "Cette application convertit le PDF en Excel, prêt à être importé dans Odoo."
+)
 
 st.set_page_config(page_title="Francisation PDF → Excel", layout="wide")
 st.title("PDF → Excel Converter")
@@ -94,12 +112,22 @@ if uploaded_file:
         with pd.ExcelWriter(output, engine="openpyxl") as writer:
             df_final.to_excel(writer, index=False, sheet_name="Data")
 
+        #st.download_button(
+         #   label="Télécharger Excel",
+          #  data=output.getvalue(),
+           # file_name="conversion_cari.xlsx",
+            #mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        #)
+        
+        nom_fichier = uploaded_file.name
+        nom_sans_ext = os.path.splitext(nom_fichier)[0]
+
         st.download_button(
-            label="Télécharger Excel",
-            data=output.getvalue(),
-            file_name="conversion_cari.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
+          label="Télécharger Excel",
+          data=output.getvalue(),
+          file_name=f"{nom_sans_ext}_Excel.xlsx",
+          mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+       )
 
     else:
         st.warning("Aucun tableau détecté dans le PDF")
