@@ -8,13 +8,13 @@ col1, col2 = st.columns([1,4])
 col1, col2 = st.columns([4, 1])
 
 with col1:
-    st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
+    st.title("Outil de conversion PDF vers Excel")
 
 with col2:
     st.image("logo.png", width=220)
 
 st.set_page_config(
-    page_title="Outil de conversion PDF vers Excel",
+    page_title="Convertisseur PDF vers Excel",
     page_icon="logo.png"
 )
 
