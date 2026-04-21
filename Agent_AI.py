@@ -32,7 +32,7 @@ div.stButton > button {
 div.stButton button {
     width: 100%;
     min-height: 100px;
-    font-size: 24px;
+    font-size: 34px;
     font-weight: 700;
     border-radius: 20px;
     border: none;
