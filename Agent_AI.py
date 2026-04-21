@@ -11,11 +11,19 @@ from datetime import datetime
 # -------------------------
 # CONFIG
 # -------------------------
+
 st.set_page_config(
     page_title="Outils Excel",
     page_icon="logo.png",
     layout="wide"
 )
+
+# Navigation via query params
+page = st.query_params.get("page", "accueil")
+
+def changer_page(page_name):
+    st.query_params["page"] = page_name
+    st.rerun()
 
 # -------------------------
 # CSS GLOBAL
@@ -23,62 +31,44 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-
-/* ===== Style général des boutons accueil ===== */
-div.stButton > button {
+.fake-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     width: 100%;
-    min-height: 110px;
-    font-size: 26px;
+    min-height: 120px;
+    border-radius: 24px;
+    text-decoration: none;
+    color: white !important;
+    font-size: 28px;
     font-weight: 700;
-    border-radius: 22px;
-    border: none;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    transition: all 0.25s ease;
+    padding: 20px;
+}
+
+.fake-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 30px rgba(0,0,0,0.22);
     color: white !important;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.20);
-    transition: all 0.3s ease;
 }
 
-div.stButton > button span {
-    color: white !important;
-    font-size: 26px !important;
-    font-weight: 700 !important;
+.fake-btn-blue {
+    background: #163d8f;
 }
 
-/* Hover global */
-div.stButton > button:hover {
-    transform: translateY(-3px);
+.fake-btn-blue:hover {
+    background: #f58220;
 }
 
-/* ===== Ligne des boutons accueil ===== */
-/* Avec ton layout:
-   top1, top2 = colonnes 1 et 2
-   espace1, col1, col2, espace2 = colonnes 3, 4, 5, 6
-   Donc:
-   col1 = colonne 4
-   col2 = colonne 5
-*/
-
-/* Bouton Convertir = bleu */
-div[data-testid="column"]:nth-of-type(4) div.stButton > button {
-    background: #163d8f !important;
+.fake-btn-orange {
+    background: #f58220;
 }
 
-/* Hover du bouton Convertir = orange */
-div[data-testid="column"]:nth-of-type(4) div.stButton > button:hover {
-    background: #f58220 !important;
-    box-shadow: 0 12px 30px rgba(245,130,32,0.45);
+.fake-btn-orange:hover {
+    background: #163d8f;
 }
-
-/* Bouton Comparer = orange */
-div[data-testid="column"]:nth-of-type(5) div.stButton > button {
-    background: #f58220 !important;
-}
-
-/* Hover du bouton Comparer = bleu */
-div[data-testid="column"]:nth-of-type(5) div.stButton > button:hover {
-    background: #163d8f !important;
-    box-shadow: 0 12px 30px rgba(22,61,143,0.45);
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -110,21 +100,23 @@ def accueil():
     espace1, col1, col2, espace2 = st.columns([1, 2, 2, 1])
 
     with col1:
-        st.button(
-            "📄 Convertir PDF en Excel",
-            use_container_width=True,
-            on_click=changer_page,
-            args=("conversion",),
-            key="btn_conv"
+        st.markdown(
+            """
+            <a class="fake-btn fake-btn-blue" href="/?page=conversion">
+                📄 Convertir PDF en Excel
+            </a>
+            """,
+            unsafe_allow_html=True
         )
 
     with col2:
-        st.button(
-            "🔍 Comparer deux fichiers Excel",
-            use_container_width=True,
-            on_click=changer_page,
-            args=("comparaison",),
-            key="btn_comp"
+        st.markdown(
+            """
+            <a class="fake-btn fake-btn-orange" href="/?page=comparaison">
+                🔍 Comparer deux fichiers Excel
+            </a>
+            """,
+            unsafe_allow_html=True
         )
 
 # -------------------------
@@ -150,8 +142,8 @@ def app_conversion():
     col1, col2 = st.columns([4, 1])
 
     with col1:
-        if st.button("⬅ Retour"):
-            changer_page("accueil")
+        if st.button("⬅ Retour", key="retour_conversion"):
+           changer_page("accueil")
         st.title("Outil de conversion PDF vers Excel")
 
     with col2:
@@ -244,8 +236,8 @@ def app_comparaison():
     col1, col2 = st.columns([4, 1])
 
     with col1:
-        if st.button("⬅ Retour"):
-            changer_page("accueil")
+        if st.button("⬅ Retour", key="retour_comparaison"):
+           changer_page("accueil")
         st.title("Comparaison Excel")
 
     with col2:
@@ -269,11 +261,11 @@ def app_comparaison():
 # -------------------------
 # ROUTER
 # -------------------------
-if st.session_state.page == "accueil":
+if page == "accueil":
     accueil()
-
-elif st.session_state.page == "conversion":
+elif page == "conversion":
     app_conversion()
-
-elif st.session_state.page == "comparaison":
+elif page == "comparaison":
     app_comparaison()
+else:
+    accueil()
