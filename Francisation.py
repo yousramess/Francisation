@@ -22,10 +22,10 @@ st.write(
     "Cette application convertit le PDF en Excel, prêt à être importé dans Odoo."
 )
 
-st.set_page_config(page_title="Francisation PDF → Excel", layout="wide")
-st.title("PDF → Excel Converter")
 
-uploaded_file = st.file_uploader("Upload ton PDF", type="pdf")
+st.subtitle("PDF → Excel")
+
+uploaded_file = st.file_uploader("Téléverse ton fichier PDF", type="pdf")
 
 
 def split_nom_prenom(nom_complet):
