@@ -24,7 +24,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* ===== STYLE GLOBAL BOUTONS ===== */
+/* ===== Style général des boutons accueil ===== */
 div.stButton > button {
     width: 100%;
     min-height: 110px;
@@ -33,54 +33,54 @@ div.stButton > button {
     border-radius: 22px;
     border: none;
     color: white !important;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.20);
     transition: all 0.3s ease;
 }
 
-/* TEXTE INTERNE */
 div.stButton > button span {
     color: white !important;
     font-size: 26px !important;
     font-weight: 700 !important;
 }
 
-/* ===== BOUTON 1 (BLEU) ===== */
-div.stButton:nth-of-type(1) button {
-    background: #163d8f !important;  /* bleu foncé */
-}
-
-/* HOVER → devient ORANGE */
-div.stButton:nth-of-type(1) button:hover {
-    background: #f58220 !important;
-    transform: scale(1.05);
-    box-shadow: 0 12px 30px rgba(245,130,32,0.5);
-}
-
-/* ===== BOUTON 2 (ORANGE) ===== */
-div.stButton:nth-of-type(2) button {
-    background: #f58220 !important;  /* orange */
-}
-
-/* HOVER → devient BLEU */
-div.stButton:nth-of-type(2) button:hover {
-    background: #163d8f !important;
-    transform: scale(1.05);
-    box-shadow: 0 12px 30px rgba(22,61,143,0.5);
-}
-
-/* ===== EFFET HOVER GLOBAL ===== */
+/* Hover global */
 div.stButton > button:hover {
     transform: translateY(-3px);
 }
 
-/* ===== SUPPRESSION STYLE PAR DÉFAUT STREAMLIT ===== */
-button[kind="secondary"] {
-    background: none;
+/* ===== Ligne des boutons accueil ===== */
+/* Avec ton layout:
+   top1, top2 = colonnes 1 et 2
+   espace1, col1, col2, espace2 = colonnes 3, 4, 5, 6
+   Donc:
+   col1 = colonne 4
+   col2 = colonne 5
+*/
+
+/* Bouton Convertir = bleu */
+div[data-testid="column"]:nth-of-type(4) div.stButton > button {
+    background: #163d8f !important;
+}
+
+/* Hover du bouton Convertir = orange */
+div[data-testid="column"]:nth-of-type(4) div.stButton > button:hover {
+    background: #f58220 !important;
+    box-shadow: 0 12px 30px rgba(245,130,32,0.45);
+}
+
+/* Bouton Comparer = orange */
+div[data-testid="column"]:nth-of-type(5) div.stButton > button {
+    background: #f58220 !important;
+}
+
+/* Hover du bouton Comparer = bleu */
+div[data-testid="column"]:nth-of-type(5) div.stButton > button:hover {
+    background: #163d8f !important;
+    box-shadow: 0 12px 30px rgba(22,61,143,0.45);
 }
 
 </style>
 """, unsafe_allow_html=True)
-
 
 # -------------------------
 # NAVIGATION
@@ -107,7 +107,6 @@ def accueil():
     st.write("")
     st.write("")
 
-    # centrage
     espace1, col1, col2, espace2 = st.columns([1, 2, 2, 1])
 
     with col1:
