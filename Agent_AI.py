@@ -37,27 +37,27 @@ def changer_page(page):
 st.markdown("""
 <style>
 div.stButton > button {
-    height: 70px;
+    height: 75px;
     font-size: 20px;
-    font-weight: 600;
-    border-radius: 14px;
+    font-weight: bold;
+    border-radius: 16px;
     border: none;
     color: white;
-    transition: 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* premier bouton */
+div[data-testid="column"]:nth-of-type(1) div.stButton > button {
+    background-color: #2563eb;
+}
+
+/* deuxième bouton */
+div[data-testid="column"]:nth-of-type(2) div.stButton > button {
+    background-color: #ea580c;
 }
 
 div.stButton > button:hover {
-    transform: scale(1.03);
-}
-
-/* Bouton 1 */
-div[data-testid="column"]:nth-of-type(1) div.stButton > button {
-    background: linear-gradient(90deg, #1f77b4, #4fa3ff);
-}
-
-/* Bouton 2 */
-div[data-testid="column"]:nth-of-type(2) div.stButton > button {
-    background: linear-gradient(90deg, #16a34a, #4ade80);
+    opacity: 0.92;
 }
 </style>
 """, unsafe_allow_html=True)
