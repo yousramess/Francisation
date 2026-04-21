@@ -36,31 +36,40 @@ def changer_page(page):
 
 st.markdown("""
 <style>
+
+/* Style général boutons */
 div.stButton > button {
-    height: 75px;
-    font-size: 20px;
+    width: 100%;
+    height: 80px;
+    font-size: 22px;
     font-weight: bold;
-    border-radius: 16px;
+    border-radius: 18px;
     border: none;
     color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-top: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in-out;
 }
 
-/* premier bouton */
-div[data-testid="column"]:nth-of-type(1) div.stButton > button {
-    background-color: #2563eb;
-}
-
-/* deuxième bouton */
-div[data-testid="column"]:nth-of-type(2) div.stButton > button {
-    background-color: #ea580c;
-}
-
+/* Hover effet */
 div.stButton > button:hover {
-    opacity: 0.92;
+    transform: scale(1.04);
+    opacity: 0.95;
 }
+
+/* Bouton 1 (BLEU FONCÉ) */
+div[data-testid="column"]:nth-of-type(1) div.stButton > button {
+    background-color: #1e3a8a;  /* bleu foncé */
+}
+
+/* Bouton 2 (ORANGE) */
+div[data-testid="column"]:nth-of-type(2) div.stButton > button {
+    background-color: #f97316;  /* orange */
+}
+
 </style>
 """, unsafe_allow_html=True)
+
 # -------------------------
 # PAGE ACCUEIL
 # -------------------------
@@ -75,7 +84,8 @@ def accueil():
         st.image("logo.png", width=180)
 
     st.write("")
-    c1, c2, c3 = st.columns([1, 1, 1])
+
+    c1, c2 = st.columns(2)
 
     with c1:
         st.button(
@@ -83,7 +93,7 @@ def accueil():
             use_container_width=True,
             on_click=changer_page,
             args=("conversion",),
-            key="btn_conversion_accueil"
+            key="btn_conv"
         )
 
     with c2:
@@ -92,9 +102,8 @@ def accueil():
             use_container_width=True,
             on_click=changer_page,
             args=("comparaison",),
-            key="btn_comparaison_accueil"
+            key="btn_comp"
         )
-
 
 # -------------------------
 # OUTIL CONVERSION
