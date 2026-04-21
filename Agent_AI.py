@@ -18,11 +18,47 @@ st.set_page_config(
 )
 
 st.markdown("""
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
+<style>
+
+/* STYLE GLOBAL */
+div.stButton > button {
+    width: 100%;
+    height: 90px;
+    font-size: 24px;
+    font-weight: 700;
+    border-radius: 18px;
+    border: none;
+    color: white !important;
+    margin-top: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+/* HOVER */
+div.stButton > button:hover {
+    transform: scale(1.03);
+    opacity: 0.95;
+}
+
+/* TEXTE */
+div.stButton > button p,
+div.stButton > button span {
+    color: white !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+}
+
+/* BOUTON 1 (bleu) */
+div[data-testid="column"]:nth-of-type(3) div.stButton > button {
+    background-color: #1e3a8a !important;
+}
+
+/* BOUTON 2 (orange) */
+div[data-testid="column"]:nth-of-type(4) div.stButton > button {
+    background-color: #f97316 !important;
+}
+
+</style>
 """, unsafe_allow_html=True)
 
 # -------------------------
@@ -34,41 +70,6 @@ if "page" not in st.session_state:
 def changer_page(page):
     st.session_state.page = page
 
-st.markdown("""
-<style>
-
-/* Style général boutons */
-div.stButton > button {
-    width: 100%;
-    height: 80px;
-    font-size: 22px;
-    font-weight: bold;
-    border-radius: 18px;
-    border: none;
-    color: white;
-    margin-top: 10px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-    transition: all 0.2s ease-in-out;
-}
-
-/* Hover effet */
-div.stButton > button:hover {
-    transform: scale(1.04);
-    opacity: 0.95;
-}
-
-/* Bouton 1 (BLEU FONCÉ) */
-div[data-testid="column"]:nth-of-type(1) div.stButton > button {
-    background-color: #1e3a8a;  /* bleu foncé */
-}
-
-/* Bouton 2 (ORANGE) */
-div[data-testid="column"]:nth-of-type(2) div.stButton > button {
-    background-color: #f97316;  /* orange */
-}
-
-</style>
-""", unsafe_allow_html=True)
 
 # -------------------------
 # PAGE ACCUEIL
