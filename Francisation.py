@@ -23,7 +23,7 @@ st.write(
 )
 
 
-st.subtitle("PDF → Excel")
+st.subheader("PDF → Excel")
 
 uploaded_file = st.file_uploader("Téléverse ton fichier PDF", type="pdf")
 
