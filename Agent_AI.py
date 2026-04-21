@@ -34,7 +34,33 @@ if "page" not in st.session_state:
 def changer_page(page):
     st.session_state.page = page
 
+st.markdown("""
+<style>
+div.stButton > button {
+    height: 70px;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 14px;
+    border: none;
+    color: white;
+    transition: 0.3s ease;
+}
 
+div.stButton > button:hover {
+    transform: scale(1.03);
+}
+
+/* Bouton 1 */
+div[data-testid="column"]:nth-of-type(1) div.stButton > button {
+    background: linear-gradient(90deg, #1f77b4, #4fa3ff);
+}
+
+/* Bouton 2 */
+div[data-testid="column"]:nth-of-type(2) div.stButton > button {
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+</style>
+""", unsafe_allow_html=True)
 # -------------------------
 # PAGE ACCUEIL
 # -------------------------
@@ -56,7 +82,8 @@ def accueil():
             "📄 Convertir PDF en Excel",
             use_container_width=True,
             on_click=changer_page,
-            args=("conversion",)
+            args=("conversion",),
+            key="btn_conversion_accueil"
         )
 
     with c2:
@@ -64,7 +91,8 @@ def accueil():
             "🔍 Comparer deux fichiers Excel",
             use_container_width=True,
             on_click=changer_page,
-            args=("comparaison",)
+            args=("comparaison",),
+            key="btn_comparaison_accueil"
         )
 
 
