@@ -3,6 +3,15 @@ import pdfplumber
 import pandas as pd
 from io import BytesIO
 
+st.markdown("""
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+""", unsafe_allow_html=True)
+
+
 col1, col2 = st.columns([1,4])
 
 col1, col2 = st.columns([4, 1])
