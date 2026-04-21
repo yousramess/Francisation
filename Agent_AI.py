@@ -112,7 +112,7 @@ def accueil():
     with col2:
         st.markdown(
             """
-            <a class="fake-btn fake-btn-orange" href="/?page=comparaison">
+            <a class="fake-btn fake-btn-blue" href="/?page=comparaison">
                 🔍 Comparer deux fichiers Excel
             </a>
             """,
