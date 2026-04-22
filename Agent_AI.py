@@ -95,7 +95,7 @@ def accueil():
         st.markdown(
             """
             <a class="fake-btn fake-btn-blue" href="/?page=conversion">
-                📄 Convertir PDF en Excel
+                📄 Convertir la liste PDF en Excel
             </a>
             """,
             unsafe_allow_html=True
@@ -105,7 +105,7 @@ def accueil():
         st.markdown(
             """
             <a class="fake-btn fake-btn-blue" href="/?page=comparaison">
-                🔍 Comparer deux fichiers Excel
+                🔍 Détecter les nouveaux étudiants
             </a>
             """,
             unsafe_allow_html=True
