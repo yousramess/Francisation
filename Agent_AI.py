@@ -11,14 +11,15 @@ from datetime import datetime
 # -------------------------
 # CONFIG
 # -------------------------
-
 st.set_page_config(
     page_title="Outils Excel",
     page_icon="logo.png",
     layout="wide"
 )
 
-# Navigation via query params
+# -------------------------
+# NAVIGATION
+# -------------------------
 page = st.query_params.get("page", "accueil")
 
 def changer_page(page_name):
@@ -28,7 +29,6 @@ def changer_page(page_name):
 # -------------------------
 # CSS GLOBAL
 # -------------------------
-
 st.markdown("""
 <style>
 .fake-btn {
@@ -73,15 +73,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # -------------------------
-# NAVIGATION
-# -------------------------
-if "page" not in st.session_state:
-    st.session_state.page = "accueil"
-
-#def changer_page(page):
-    #st.session_state.page = page
-
-# -------------------------
 # PAGE ACCUEIL
 # -------------------------
 def accueil():
@@ -92,7 +83,8 @@ def accueil():
         st.write("Sélectionnez l’outil que vous souhaitez utiliser.")
 
     with top2:
-        st.image("logo.png", width=250)
+        if os.path.exists("logo.png"):
+            st.image("logo.png", width=180)
 
     st.write("")
     st.write("")
@@ -135,6 +127,7 @@ def split_nom_prenom(nom_complet):
     morceaux = texte.split()
     if len(morceaux) == 1:
         return morceaux[0], ""
+
     return morceaux[-1], " ".join(morceaux[:-1])
 
 
@@ -143,11 +136,12 @@ def app_conversion():
 
     with col1:
         if st.button("⬅ Retour", key="retour_conversion"):
-           changer_page("accueil")
+            changer_page("accueil")
         st.title("Outil de conversion PDF vers Excel")
 
     with col2:
-        st.image("logo.png", width=180)
+        if os.path.exists("logo.png"):
+            st.image("logo.png", width=150)
 
     st.subheader("PDF → Excel")
 
@@ -166,8 +160,8 @@ def app_conversion():
         ]
 
         with pdfplumber.open(uploaded_file) as pdf:
-            for page in pdf.pages:
-                table = page.extract_table()
+            for page_pdf in pdf.pages:
+                table = page_pdf.extract_table()
                 if table:
                     for row in table:
                         if row and len(row) == 6:
@@ -198,24 +192,27 @@ def app_conversion():
             df_final = pd.DataFrame(lignes_finales)
 
             st.success("Conversion réussie ✅")
-            st.dataframe(df_final)
+            st.dataframe(df_final, use_container_width=True)
 
             output = BytesIO()
             with pd.ExcelWriter(output, engine="openpyxl") as writer:
                 df_final.to_excel(writer, index=False)
+            output.seek(0)
 
             nom = os.path.splitext(uploaded_file.name)[0]
 
             st.download_button(
-                "Télécharger Excel",
-                output.getvalue(),
-                f"{nom}_Excel.xlsx"
+                label="Télécharger Excel",
+                data=output.getvalue(),
+                file_name=f"{nom}_Excel.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
+        else:
+            st.warning("Aucun tableau valide trouvé dans le PDF.")
 
 # -------------------------
-# COMPARAISON
+# COMPARAISON - FONCTIONS
 # -------------------------
-# 🔹 Normaliser nom de colonne
 def normaliser_nom_colonne(col):
     col = str(col).strip().lower()
     col = ''.join(
@@ -226,7 +223,6 @@ def normaliser_nom_colonne(col):
     return col
 
 
-# 🔹 Trouver colonne Ref.Indiv
 def trouver_colonne_ref_indiv(df):
     variantes = {
         "refindiv",
@@ -242,7 +238,6 @@ def trouver_colonne_ref_indiv(df):
     return None
 
 
-# 🔹 Nettoyage valeurs
 def nettoyer_ref(serie):
     return (
         serie.astype(str)
@@ -251,32 +246,30 @@ def nettoyer_ref(serie):
     )
 
 
-# 🔹 Comparaison
 def comparer_fichiers(df1, df2):
-    col1 = trouver_colonne_ref_indiv(df1)
-    col2 = trouver_colonne_ref_indiv(df2)
+    col_ref_1 = trouver_colonne_ref_indiv(df1)
+    col_ref_2 = trouver_colonne_ref_indiv(df2)
 
-    if not col1:
-        raise ValueError("Colonne 'Ref.Indiv' introuvable dans le fichier 1")
-    if not col2:
-        raise ValueError("Colonne 'Ref.Indiv' introuvable dans le fichier 2")
+    if not col_ref_1:
+        raise ValueError("Colonne 'Ref.Indiv' introuvable dans le fichier 1.")
+    if not col_ref_2:
+        raise ValueError("Colonne 'Ref.Indiv' introuvable dans le fichier 2.")
 
     df1 = df1.copy()
     df2 = df2.copy()
 
-    df1[col1] = nettoyer_ref(df1[col1])
-    df2[col2] = nettoyer_ref(df2[col2])
+    df1[col_ref_1] = nettoyer_ref(df1[col_ref_1])
+    df2[col_ref_2] = nettoyer_ref(df2[col_ref_2])
 
-    refs_fichier1 = set(df1[col1].dropna().unique())
+    refs_fichier1 = set(df1[col_ref_1].dropna().unique())
 
     nouvelles_lignes = df2[
-        df2[col2].notna() & (~df2[col2].isin(refs_fichier1))
+        df2[col_ref_2].notna() & (~df2[col_ref_2].isin(refs_fichier1))
     ].copy()
 
-    return nouvelles_lignes, col1, col2
+    return nouvelles_lignes, col_ref_1, col_ref_2
 
 
-# 🔹 Export Excel
 def dataframe_to_excel_bytes(df):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
@@ -284,87 +277,87 @@ def dataframe_to_excel_bytes(df):
     output.seek(0)
     return output.getvalue()
 
+# -------------------------
+# PAGE COMPARAISON
+# -------------------------
+def app_comparaison():
+    col1, col2 = st.columns([4, 1])
 
-# ================== UI ==================
-col1, col2 = st.columns([1,4])
+    with col1:
+        if st.button("⬅ Retour", key="retour_comparaison"):
+            changer_page("accueil")
+        st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
 
-col1, col2 = st.columns([4, 1])
+    with col2:
+        if os.path.exists("logo.png"):
+            st.image("logo.png", width=180)
 
-with col1:
-    st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
+    st.write(
+        "Cette application compare deux fichiers Excel sur la colonne **Ref.Indiv** "
+        "et extrait les lignes du **2e fichier** qui n'existent pas dans le **1er**."
+    )
 
-with col2:
-    st.image("logo.png", width=250)
+    col1_ui, col2_ui = st.columns(2)
 
-st.set_page_config(
-    page_title="Comparaison Excel",
-    page_icon="logo.png"
-)
+    with col1_ui:
+        fichier1 = st.file_uploader(
+            "Fichier 1 (référence)",
+            type=["xlsx", "xls"],
+            key="fichier1"
+        )
 
-st.write(
-    "Cette application compare deux fichiers Excel sur la colonne **Ref.Indiv** "
-    "et extrait les lignes du **2e fichier** qui n'existent pas dans le **1er**."
-)
+    with col2_ui:
+        fichier2 = st.file_uploader(
+            "Fichier 2 (à comparer)",
+            type=["xlsx", "xls"],
+            key="fichier2"
+        )
 
-col1_ui, col2_ui = st.columns(2)
+    if fichier1 and fichier2:
+        try:
+            df1 = pd.read_excel(fichier1)
+            df2 = pd.read_excel(fichier2)
 
-with col1_ui:
-    fichier1 = st.file_uploader("Fichier 1 (référence)", type=["xlsx", "xls"])
+            st.success("Fichiers chargés avec succès ✅")
 
-with col2_ui:
-    fichier2 = st.file_uploader("Fichier 2 (à comparer)", type=["xlsx", "xls"])
+            with st.expander("Aperçu fichier 1"):
+                st.dataframe(df1.head(10), use_container_width=True)
 
+            with st.expander("Aperçu fichier 2"):
+                st.dataframe(df2.head(10), use_container_width=True)
 
-if fichier1 and fichier2:
-    try:
-        df1 = pd.read_excel(fichier1)
-        df2 = pd.read_excel(fichier2)
+            if st.button("Lancer la comparaison", key="btn_comparaison"):
+                nouvelles_lignes, col_ref_1, col_ref_2 = comparer_fichiers(df1, df2)
 
-        st.success("Fichiers chargés avec succès")
+                st.info(f"Colonne détectée fichier 1 : {col_ref_1}")
+                st.info(f"Colonne détectée fichier 2 : {col_ref_2}")
 
-        with st.expander("Aperçu fichier 1"):
-            st.dataframe(df1.head(10), use_container_width=True)
+                st.subheader("Résultat")
+                st.write(f"Nombre de nouvelles lignes : **{len(nouvelles_lignes)}**")
 
-        with st.expander("Aperçu fichier 2"):
-            st.dataframe(df2.head(10), use_container_width=True)
+                if len(nouvelles_lignes) > 0:
+                    st.dataframe(nouvelles_lignes, use_container_width=True)
 
-        if st.button("Lancer la comparaison"):
+                    nom_original = os.path.splitext(fichier2.name)[0]
+                    date_str = datetime.now().strftime("%Y%m%d")
+                    nom_sortie = f"{nom_original}_New_{date_str}.xlsx"
 
-            nouvelles_lignes, col1, col2 = comparer_fichiers(df1, df2)
+                    excel_bytes = dataframe_to_excel_bytes(nouvelles_lignes)
 
-            st.info(f"Colonne détectée fichier 1 : {col1}")
-            st.info(f"Colonne détectée fichier 2 : {col2}")
+                    st.download_button(
+                        label="Télécharger le fichier résultat",
+                        data=excel_bytes,
+                        file_name=nom_sortie,
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    )
+                else:
+                    st.warning("Aucune nouvelle ligne à ajouter.")
 
-            st.subheader("Résultat")
+        except Exception as e:
+            st.error(f"Erreur : {e}")
+    else:
+        st.warning("Veuillez téléverser les 2 fichiers Excel.")
 
-            st.write(f"Nombre de nouvelles lignes : **{len(nouvelles_lignes)}**")
-
-            if len(nouvelles_lignes) > 0:
-
-                st.dataframe(nouvelles_lignes, use_container_width=True)
-
-                # 🔹 Nom du fichier dynamique
-                nom_original = os.path.splitext(fichier2.name)[0]
-                date_str = datetime.now().strftime("%Y%m%d")
-                nom_sortie = f"{nom_original}_New_{date_str}.xlsx"
-
-                excel_bytes = dataframe_to_excel_bytes(nouvelles_lignes)
-
-                st.download_button(
-                    label="Télécharger le fichier résultat",
-                    data=excel_bytes,
-                    file_name=nom_sortie,
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
-
-            else:
-                st.warning("Aucune nouvelle ligne à ajouter.")
-
-    except Exception as e:
-        st.error(f"Erreur : {e}")
-
-else:
-    st.warning("Veuillez téléverser les 2 fichiers Excel.")
 # -------------------------
 # ROUTER
 # -------------------------
