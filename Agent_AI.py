@@ -169,12 +169,11 @@ def app_conversion():
             label_visibility="collapsed"
         )
 
-    return etiquette_valeur
-
     st.subheader("PDF → Excel")
 
     uploaded_file = st.file_uploader("Téléverse ton fichier PDF", type=["pdf"])
-
+    return etiquette_valeur
+    
     if uploaded_file:
         all_rows = []
 
