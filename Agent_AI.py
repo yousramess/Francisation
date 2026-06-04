@@ -172,7 +172,7 @@ def app_conversion():
     st.subheader("PDF → Excel")
 
     uploaded_file = st.file_uploader("Téléverse ton fichier PDF", type=["pdf"])
-    return etiquette_valeur
+    
     
     if uploaded_file:
         all_rows = []
@@ -236,6 +236,8 @@ def app_conversion():
             )
         else:
             st.warning("Aucun tableau valide trouvé dans le PDF.")
+            
+        return etiquette_valeur
 
 # -------------------------
 # COMPARAISON - FONCTIONS
