@@ -286,7 +286,7 @@ def app_comparaison():
     with col1:
         if st.button("⬅ Retour", key="retour_comparaison"):
             changer_page("accueil")
-        st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
+        st.title("Détection des nouveaux étudiants")
 
     with col2:
         if os.path.exists("logo.png"):
