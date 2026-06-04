@@ -146,27 +146,28 @@ def app_conversion():
     with col1:
         if st.button("⬅ Retour", key="retour_conversion"):
             changer_page("accueil")
+
         st.title("Outil de conversion PDF vers Excel")
 
     with col2:
         if os.path.exists("logo.png"):
             st.image("logo.png", width=150)
-     # 1. Étiquette d'abord
 
-   col1, col2 = st.columns([1.7, 3], vertical_alignment="center")
+    # Étiquette
+    col1, col2 = st.columns([1.7, 3], vertical_alignment="center")
 
     with col1:
-       st.markdown(
-        '<div style="font-size:28px; font-weight:600;">🏷️ Ajouter votre étiquette</div>',
-        unsafe_allow_html=True
-    )
+        st.markdown(
+            '<div style="font-size:28px; font-weight:600;">🏷️ Ajouter votre étiquette</div>',
+            unsafe_allow_html=True
+        )
 
     with col2:
-       etiquette_valeur = st.text_input(
-        "",
-          placeholder="Ajouter ici...",
-          label_visibility="collapsed"
-    )
+        etiquette_valeur = st.text_input(
+            "",
+            placeholder="Ajouter ici...",
+            label_visibility="collapsed"
+        )
 
     return etiquette_valeur
 
