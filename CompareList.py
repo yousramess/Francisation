@@ -14,7 +14,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.set_page_config(page_title="Comparaison Excel - Ref.Indiv", layout="wide")
+st.set_page_config(page_title="Détection des nouveaux étudiants", layout="wide")
 
 # 🔹 Normaliser nom de colonne
 def normaliser_nom_colonne(col):
@@ -92,7 +92,7 @@ col1, col2 = st.columns([1,4])
 col1, col2 = st.columns([4, 1])
 
 with col1:
-    st.title("Comparaison de 2 fichiers Excel (Ref.Indiv)")
+    st.title("Détection des nouveaux étudiants")
 
 with col2:
     st.image("logo.png", width=250)
